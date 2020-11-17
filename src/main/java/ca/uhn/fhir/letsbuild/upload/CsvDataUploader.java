@@ -5,6 +5,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.hl7.fhir.r4.model.Observation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -12,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 public class CsvDataUploader {
+
+    private static final Logger ourLog = LoggerFactory.getLogger(CsvDataUploader.class);
 
     public static void main(String[] theArgs) throws Exception {
 
@@ -29,6 +33,9 @@ public class CsvDataUploader {
 
                 // Sequence number - This could be used as an ID for generated resources
                 String seqN = nextRecord.get("SEQN");
+
+                // Add a log line - you can copy this to add more helpful logging
+                ourLog.info("Processing row: {}", seqN);
 
                 // Timestamp - This will be formatted in ISO8601 format
                 String timestamp = nextRecord.get("TIMESTAMP");

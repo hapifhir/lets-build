@@ -23,8 +23,8 @@ The input CSV file can be found here: https://github.com/hapifhir/lets-build/blo
 The input data looks like the following:
 
 ```csv
-SEQN   ,TIMESTAMP               ,PATIENT_ID,PATIENT_FAMILYNAME,PATIENT_GIVENNAME,PATIENT_GENDER,WBC,RBC,HB
-93704.0,2020-11-13T07:47:35.964Z,PT00002   ,Simpson           ,Marge            ,F             ,7.4,0.1,13.1
+SEQN   , TIMESTAMP               , PATIENT_ID, PATIENT_FAMILYNAME, PATIENT_GIVENNAME, PATIENT_GENDER, WBC, RBC, HB
+93704.0, 2020-11-13T07:47:35.964Z, PT00002   , Simpson           , Marge            , F             , 7.4, 0.1, 13.1
 ```
 
 Note the columns:
