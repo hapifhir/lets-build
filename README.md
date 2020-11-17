@@ -37,7 +37,9 @@ Note the columns:
    * PATIENT_GIVENNAME: This is the given (first) name of the patient
    * PATIENT_GENDER: This is the gender of the patient
 * Test result columns (each of these will be a separate Observation resource):
-   * WBC: "White Blood Cells": This a count of the number
+   * WBC: "White Blood Cell Count": This is a count of the number of white blood cells in your blood (These cells deliver oxygen)
+   * RBC: "Red Blood Cell Count": This is a count of the number of red blood cells in your blood (These cells are an important part of the immune system)
+   * HB: "Hemoglobin": This a measurement of the amount of hemoglobin protein in your blood (this iron-rich protein carries oxygen, among other things)
 
 ## Starting a local test server
 
@@ -55,14 +57,21 @@ This will take a minute or two to start, but eventually you'll see a message tha
 Try pointing your browser to the following URL to see the base URL of the server (you'll get a message that "This is the base URL of FHIR Server", this means it's working!)
 
 http://localhost:8080/fhir
+````
+## Writing a Mapper
 
+* Open the following class: [ca.uhn.fhir.letsbuild.upload.CsvDataUploader](https://github.com/hapifhir/lets-build/blob/main/src/main/java/ca/uhn/fhir/letsbuild/upload/CsvDataUploader.java).
 
-## Writting a Mapper
+* Notice how this class has a basic skeleton that reads in a CSV file.
 
-Open the following class 
-
+* Create a FHIR Client:
  
+   * Using the instructions here: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html
+   * Use the base URL for your locally running server: http://localhost:8080/fhir
+ 
+* For each row, create the Patient resource. Use an Update (PUT) operation so that you can control the ID of the patient resource. For example, you might want *Marge Simpson* to have a resource ID of "Patient/PT00002"
 
+* For each row, create 3 Observation resources, one for each of the 3 tests.
 
 ## Hints:
 

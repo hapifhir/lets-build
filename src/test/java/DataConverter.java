@@ -51,7 +51,7 @@ public class DataConverter {
 
                     String seqN = nextRecord.get("SEQN");
                     String whiteBloodCount = nextRecord.get("LBXWBCSI");
-                    String redBloodCount = nextRecord.get("LBXNRBC");
+                    String redBloodCount = nextRecord.get("LBXRBCSI");
                     String hemoglobin = nextRecord.get("LBXHGB");
 
                     if (whiteBloodCount.toLowerCase().contains("nan")) {
