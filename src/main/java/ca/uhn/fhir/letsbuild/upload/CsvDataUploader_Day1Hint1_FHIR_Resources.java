@@ -1,6 +1,6 @@
 package ca.uhn.fhir.letsbuild.upload;
 
-public class CsvDataUploader_Hint1_FHIR_Resources {
+public class CsvDataUploader_Day1Hint1_FHIR_Resources {
 
     /*
 

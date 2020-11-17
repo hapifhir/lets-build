@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigDecimal;
 
+// This file contains an example of the complete day 1 and 2 solution
 public class CsvDataUploader_HintComplete {
 
     private static final Logger ourLog = LoggerFactory.getLogger(CsvDataUploader_HintComplete.class);

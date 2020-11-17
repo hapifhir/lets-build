@@ -3,7 +3,7 @@ package ca.uhn.fhir.letsbuild.upload;
 import org.hl7.fhir.r4.model.Enumerations;
 import org.hl7.fhir.r4.model.Patient;
 
-public class CsvDataUploader_Hint2_Create_A_Client {
+public class CsvDataUploader_Day1Hint2_PatientResource {
 
     public static void main(String[] args) {
 

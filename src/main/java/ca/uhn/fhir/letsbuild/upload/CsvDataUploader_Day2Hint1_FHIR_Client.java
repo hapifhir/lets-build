@@ -4,7 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 
-public class CsvDataUploader_Hint2_Create_A_Patient {
+public class CsvDataUploader_Day2Hint1_FHIR_Client {
 
     public static void main(String[] args) {
 

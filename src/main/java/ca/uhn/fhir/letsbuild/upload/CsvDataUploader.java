@@ -73,6 +73,10 @@ public class CsvDataUploader {
                 // Unit Code:   g/dL
                 String hb = nextRecord.get("HB");
 
+                // Day 1 Exercise:
+                // Create a Patient resource, and 3 Observation resources, and
+                // log them to the console.
+
             }
         }
     }
