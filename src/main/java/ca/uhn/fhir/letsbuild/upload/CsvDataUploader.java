@@ -47,10 +47,21 @@ public class CsvDataUploader {
                 // Display:     Leukocytes [#/volume] in Blood by Automated count
                 // Unit System: http://unitsofmeasure.org
                 // Unit Code:   10*3/uL
-                String wbc = nextRecord.get("LBXWBCSI");
+                String rbc = nextRecord.get("RBC");
 
+                // White blood cell count - This corresponds to LOINC code:
+                // Code:        789-8
+                // Display:     Erythrocytes [#/volume] in Blood by Automated count
+                // Unit System: http://unitsofmeasure.org
+                // Unit Code:   10*6/uL
+                String wbc = nextRecord.get("WBC");
 
-                String lymphocyte = nextRecord.get("LBXLYPCT");
+                // Hemoglobin
+                // Code:        718-7
+                // Display:     Erythrocytes [#/volume] in Blood by Automated count
+                // Unit System: http://unitsofmeasure.org
+                // Unit Code:   10*6/uL
+                String hb = nextRecord.get("HB");
 
 
             }

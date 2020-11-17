@@ -38,7 +38,7 @@ public class DataConverter {
 
                 long date = System.currentTimeMillis();
                 int patientIndex = 0;
-                String[] patientIds = new String[]{"00001", "00002", "00003", "00004", "00005"};
+                String[] patientIds = new String[]{"PT00001", "PT00002", "PT00003", "PT00004", "PT00005"};
                 String[] patientFamilyNames = new String[]{"Simpson", "Simpson", "Simpson", "Simpson", "Simpson"};
                 String[] patientGivenNames = new String[]{"Homer", "Marge", "Bart", "Lisa", "Maggie"};
                 String[] patientGenders = new String[]{"M", "F", "M", "F", "F"};
