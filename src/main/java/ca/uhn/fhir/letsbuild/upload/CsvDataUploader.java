@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.hl7.fhir.r4.model.Observation;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -14,6 +15,7 @@ public class CsvDataUploader {
 
     public static void main(String[] theArgs) throws Exception {
 
+        // Open the CSV file for reading
         try (InputStream inputStream = new FileInputStream("src/main/resources/sample-data.csv")) {
             Reader reader = new InputStreamReader(inputStream, Charsets.UTF_8);
 
@@ -22,6 +24,7 @@ public class CsvDataUploader {
                     .withDelimiter(',');
             CSVParser csvParser = format.parse(reader);
 
+            // Loop throw each row in the CSV file
             for (CSVRecord nextRecord : csvParser.getRecords()) {
 
                 // Sequence number - This could be used as an ID for generated resources
@@ -58,11 +61,10 @@ public class CsvDataUploader {
 
                 // Hemoglobin
                 // Code:        718-7
-                // Display:     Erythrocytes [#/volume] in Blood by Automated count
+                // Display:     Hemoglobin [Mass/volume] in Blood
                 // Unit System: http://unitsofmeasure.org
-                // Unit Code:   10*6/uL
+                // Unit Code:   g/dL
                 String hb = nextRecord.get("HB");
-
 
             }
         }

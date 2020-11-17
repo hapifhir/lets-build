@@ -56,8 +56,10 @@ This will take a minute or two to start, but eventually you'll see a message tha
 
 Try pointing your browser to the following URL to see the base URL of the server (you'll get a message that "This is the base URL of FHIR Server", this means it's working!)
 
+```
 http://localhost:8080/fhir
-````
+```
+
 ## Writing a Mapper
 
 * Open the following class: [ca.uhn.fhir.letsbuild.upload.CsvDataUploader](https://github.com/hapifhir/lets-build/blob/main/src/main/java/ca/uhn/fhir/letsbuild/upload/CsvDataUploader.java).
@@ -77,3 +79,6 @@ http://localhost:8080/fhir
 
 * Don't optimize at first! There are lots of ways this code can be made efficient, but it's better to start by getting it working, then worry about performance later.
 
+* You can use the PATIENT_ID column as the resource ID for the Patient resource. Using a client-assigned ID for your resources makes the outcome predictable, and means that you can re-run your uploader as many times as you like without constantly creating new datasets. 
+
+* You can use the SEQN column as the resource ID for the Observation resources, but you will need to append something to it since there are 3 Observations per row.
