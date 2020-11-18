@@ -5,7 +5,6 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import com.google.common.base.Charsets;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -21,27 +20,30 @@ import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.SimpleQuantity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class CsvDataUploader_Day2Hint1_FHIR_Client {
+public class CsvDataUploader_Day2_start {
 
-    public static void main(String[] args) throws Exception {
+    private static final Logger ourLog = LoggerFactory.getLogger(CsvDataUploader_Day2_start.class);
+
+    public static void main(String[] theArgs) throws Exception {
 
         // The following code creates a FHIR client - You can create one client and reuse it
         // for all requests.
-        FhirContext ctx = FhirContext.forR4();
-        IGenericClient client = ctx.newRestfulGenericClient("http://localhost:8080/fhir");
+        //TODO: create ctx and client with ServerBaseUrl: http://localhost:8080/fhir
 
         // This line adds a "logging interceptor" which causes the client to output some details
         // about its actions to the console
-        client.registerInterceptor(new LoggingInterceptor(false));
+        //TODO: Register Logging Interceptor to the client
 
         // Open the CSV file for reading
         try (InputStream inputStream = new FileInputStream("src/main/resources/sample-data.csv")) {
             Reader reader = new InputStreamReader(inputStream, Charsets.UTF_8);
 
             CSVFormat format = CSVFormat.EXCEL
-                .withFirstRecordAsHeader()
-                .withDelimiter(',');
+                    .withFirstRecordAsHeader()
+                    .withDelimiter(',');
             CSVParser csvParser = format.parse(reader);
 
             // Loop throw each row in the CSV file
@@ -49,6 +51,9 @@ public class CsvDataUploader_Day2Hint1_FHIR_Client {
 
                 // Sequence number - This could be used as an ID for generated resources
                 String seqN = nextRecord.get("SEQN");
+
+                // Add a log line - you can copy this to add more helpful logging
+                ourLog.info("Processing row: {}", seqN);
 
                 // Timestamp - This will be formatted in ISO8601 format
                 String timestamp = nextRecord.get("TIMESTAMP");
@@ -81,7 +86,7 @@ public class CsvDataUploader_Day2Hint1_FHIR_Client {
                 }
 
                 // Upload the patient resource using a client-assigned ID create
-                client.update().resource(patient).execute();
+                //TODO: implement here
 
                 // White blood cell count - This corresponds to LOINC code:
                 // Code:        6690-2
@@ -108,8 +113,7 @@ public class CsvDataUploader_Day2Hint1_FHIR_Client {
                 rbcObservation.setValue(rbcValue);
                 rbcObservation.setSubject(new Reference("Patient/" + patientId));
 
-                // Upload the RBC Observation resource using a client-assigned ID create
-                client.update().resource(rbcObservation).execute();
+                //TODO: Upload the RBC Observation resource using a client-assigned ID create
 
                 // White blood cell count - This corresponds to LOINC code:
                 // Code:        789-8
@@ -136,8 +140,7 @@ public class CsvDataUploader_Day2Hint1_FHIR_Client {
                 wbcObservation.setValue(wbcValue);
                 wbcObservation.setSubject(new Reference("Patient/" + patientId));
 
-                // Upload the WBC Observation resource using a client-assigned ID create
-                client.update().resource(wbcObservation).execute();
+                //todo: Upload the WBC Observation resource using a client-assigned ID create
 
                 // Hemoglobin
                 // Code:        718-7
@@ -164,10 +167,9 @@ public class CsvDataUploader_Day2Hint1_FHIR_Client {
                 hbObservation.setValue(hbValue);
                 hbObservation.setSubject(new Reference("Patient/" + patientId));
 
-                // Upload the HB Observation resource using a client-assigned ID create
-                client.update().resource(hbObservation).execute();
-
+                //todo: Upload the HB Observation resource using a client-assigned ID create
             }
         }
     }
+
 }
