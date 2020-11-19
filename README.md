@@ -8,7 +8,7 @@
    * [Java JDK Version 11.x.x](https://adoptopenjdk.net/) (This is the recommended version but Java 8 and above should also work)
    * [Apache Maven](https://maven.apache.org/)
 
-# Step 1 - Build a FHIR Data Mapper
+# Day 1 - Build a FHIR Data Mapper
 
 **Rationale:** When adopting FHIR, a common scenario is needing to convert your existing data into the FHIR model. This can be a challenging first step, but if you approach it systematically it can be easy. 
 
@@ -82,3 +82,15 @@ http://localhost:8080/fhir
 * You can use the PATIENT_ID column as the resource ID for the Patient resource. Using a client-assigned ID for your resources makes the outcome predictable, and means that you can re-run your uploader as many times as you like without constantly creating new datasets. 
 
 * You can use the SEQN column as the resource ID for the Observation resources, but you will need to append something to it since there are 3 Observations per row.
+
+# Day 3 - Secure Your FHIR Server
+
+In this exercise we will add simple authentication and authorization to our server. To keep things simple:
+
+* We will secure only read operations, and we'll leave write operations unsecured. Obviously this isn't a setup you would use for real, but all of the read security principles work exactly the same for writing and can be used for those operations too.
+
+* We will hardcode our credentials in the server code. This is also not a practice you should ever use in a real system, but it makes it easy to show the concepts and can be replaced with something more robust as needed.
+
+## Approach
+
+Open the class `ServerAuthorizationInterceptor` and 
