@@ -13,6 +13,8 @@ public class ServerAuthorizationInterceptor extends AuthorizationInterceptor {
     public List<IAuthRule> buildRuleList(RequestDetails theRequestDetails) {
         RuleBuilder builder = new RuleBuilder();
 
+        builder.allowAll();
+
         // Step 1
         // Extract the Authorization header from theRequestDetails
         // For testing, we'll assume it will have a value of "Bearer 1" or "Bearer 2"
