@@ -13,6 +13,7 @@ public class ServerAuthorizationInterceptor extends AuthorizationInterceptor {
     public List<IAuthRule> buildRuleList(RequestDetails theRequestDetails) {
         RuleBuilder builder = new RuleBuilder();
 
+        // Precursor: remove this line
         builder.allowAll();
 
         // Step 1
