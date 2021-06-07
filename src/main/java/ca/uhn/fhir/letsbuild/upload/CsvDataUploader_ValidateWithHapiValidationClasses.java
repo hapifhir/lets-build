@@ -188,7 +188,7 @@ public class CsvDataUploader_ValidateWithHapiValidationClasses {
 
   private static void validate(FhirContext ctx, DomainResource res) {
 
-    // !!!!! IN Production you would re-use these validation objects, they are costly to build.
+    // !!!!! IN Production you would re-use these validation objects, they are costly to build. !!!!!
 
     // Create a chain that will hold our modules
     ValidationSupportChain supportChain = new ValidationSupportChain();
