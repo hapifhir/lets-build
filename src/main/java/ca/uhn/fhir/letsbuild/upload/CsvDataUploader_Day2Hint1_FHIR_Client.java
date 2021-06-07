@@ -29,7 +29,7 @@ public class CsvDataUploader_Day2Hint1_FHIR_Client {
         // The following code creates a FHIR client - You can create one client and reuse it
         // for all requests.
         FhirContext ctx = FhirContext.forR4();
-        IGenericClient client = ctx.newRestfulGenericClient("http://localhost:8080/fhir");
+        IGenericClient client = ctx.newRestfulGenericClient("http://hapi.fhir.org/baseR4");
 
         // This line adds a "logging interceptor" which causes the client to output some details
         // about its actions to the console

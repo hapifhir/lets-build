@@ -1,6 +1,7 @@
 package ca.uhn.fhir.letsbuild.upload;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import com.google.common.base.Charsets;
@@ -12,25 +13,26 @@ import java.math.BigDecimal;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Enumerations;
-import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.SimpleQuantity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class CsvDataUploader_Day2Hint2_FHIR_Client {
+public class CsvDataUploader_Day2hint3_ValidateWithClientComplete {
 
-  private static final String SYSTEM = "http://example.com/IdentSystem/";
-  private static Patient patient = null;
-  private static Bundle bundle = new Bundle();
+  private static final Logger ourLog = LoggerFactory.getLogger(
+      CsvDataUploader_Day2hint3_ValidateWithClientComplete.class);
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] theArgs) throws Exception {
 
     // The following code creates a FHIR client - You can create one client and reuse it
     // for all requests.
@@ -40,8 +42,6 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
     // This line adds a "logging interceptor" which causes the client to output some details
     // about its actions to the console
     client.registerInterceptor(new LoggingInterceptor(false));
-
-    bundle.setType(BundleType.TRANSACTION);
 
     // Open the CSV file for reading
     try (InputStream inputStream = new FileInputStream("src/main/resources/sample-data.csv")) {
@@ -58,6 +58,9 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
         // Sequence number - This could be used as an ID for generated resources
         String seqN = nextRecord.get("SEQN");
 
+        // Add a log line - you can copy this to add more helpful logging
+        ourLog.info("Processing row: {}", seqN);
+
         // Timestamp - This will be formatted in ISO8601 format
         String timestamp = nextRecord.get("TIMESTAMP");
 
@@ -73,32 +76,23 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
         // Patient Gender - Values will be "M" or "F"
         String patientGender = nextRecord.get("PATIENT_GENDER");
 
-        if (patient == null) {
-          // Create the Patient resource
-          Patient patient = new Patient();
-          patient.setId(IdType.newRandomUuid());
-          patient.addIdentifier().setSystem(SYSTEM).setValue(patientId);
-          patient.addName().setFamily(patientFamilyName).addGiven(patientGivenName);
+        // Create the Patient resource
+        Patient patient = new Patient();
+        patient.setId("Patient/" + patientId);
+        patient.addName().setFamily(patientFamilyName).addGiven(patientGivenName);
 
-          // Gender code needs to be mapped
-          switch (patientGender) {
-            case "M":
-              patient.setGender(Enumerations.AdministrativeGender.MALE);
-              break;
-            case "F":
-              patient.setGender(Enumerations.AdministrativeGender.FEMALE);
-              break;
-          }
-
-          // Add the patient to the transaction Bundle
-          bundle.addEntry()
-              .setFullUrl(patient.getIdElement().getValue())
-              .setResource(patient)
-              .getRequest()
-              .setUrl("Patient")
-              .setIfNoneExist("identifier=" + SYSTEM + "|" + patientId)
-              .setMethod(Bundle.HTTPVerb.POST);
+        // Gender code needs to be mapped
+        switch (patientGender) {
+          case "M":
+            patient.setGender(Enumerations.AdministrativeGender.MALE);
+            break;
+          case "F":
+            patient.setGender(Enumerations.AdministrativeGender.FEMALE);
+            break;
         }
+
+        //TODO:  Validate the resource
+        validate(client, patient);
 
         // White blood cell count - This corresponds to LOINC code:
         // Code:        6690-2
@@ -109,12 +103,7 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
 
         // Create the RBC Observation
         Observation rbcObservation = new Observation();
-        rbcObservation.setId(IdType.newRandomUuid());
-
-        //create Identifier Value:
-        String identValue = "rbc-" + seqN;
-
-        rbcObservation.addIdentifier().setSystem(SYSTEM).setValue(identValue);
+        rbcObservation.setId("Observation/rbc-" + seqN);
         rbcObservation.setStatus(Observation.ObservationStatus.FINAL);
         rbcObservation.setEffective(new DateTimeType(timestamp));
         Coding rbcCode = new Coding()
@@ -128,16 +117,10 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
             .setCode("10*3/uL")
             .setValue(new BigDecimal(rbc));
         rbcObservation.setValue(rbcValue);
-        rbcObservation.setSubject(new Reference(patient));
+        rbcObservation.setSubject(new Reference("Patient/" + patientId));
 
-        // add the Observation to the bundle
-        bundle.addEntry()
-            .setFullUrl(rbcObservation.getIdElement().getValue())
-            .setResource(rbcObservation)
-            .getRequest()
-            .setUrl("Observation")
-            .setIfNoneExist("identifier=" + SYSTEM + "|" + identValue)
-            .setMethod(Bundle.HTTPVerb.POST);
+        //TODO: Validate the RBC Observation resource
+        validate(client, rbcObservation);
 
         // White blood cell count - This corresponds to LOINC code:
         // Code:        789-8
@@ -148,12 +131,7 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
 
         // Create the WBC Observation
         Observation wbcObservation = new Observation();
-        wbcObservation.setId(IdType.newRandomUuid());
-
-        //create Identifier Value:
-        identValue = "wbc-" + seqN;
-
-        wbcObservation.addIdentifier().setSystem(SYSTEM).setValue(identValue);
+        wbcObservation.setId("Observation/wbc-" + seqN);
         wbcObservation.setStatus(Observation.ObservationStatus.FINAL);
         wbcObservation.setEffective(new DateTimeType(timestamp));
         Coding wbcCode = new Coding()
@@ -167,16 +145,10 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
             .setCode("10*6/uL")
             .setValue(new BigDecimal(wbc));
         wbcObservation.setValue(wbcValue);
-        wbcObservation.setSubject(new Reference(patient));
+        wbcObservation.setSubject(new Reference("Patient/" + patientId));
 
-        // add the Observation to the bundle
-        bundle.addEntry()
-            .setFullUrl(wbcObservation.getIdElement().getValue())
-            .setResource(wbcObservation)
-            .getRequest()
-            .setUrl("Observation")
-            .setIfNoneExist("identifier=" + SYSTEM + "|" + identValue)
-            .setMethod(Bundle.HTTPVerb.POST);
+        //todo: Validate the WBC Observation resource
+        validate(client, wbcObservation);
 
         // Hemoglobin
         // Code:        718-7
@@ -187,12 +159,7 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
 
         // Create the HB Observation
         Observation hbObservation = new Observation();
-        hbObservation.setId(IdType.newRandomUuid());
-
-        //create Identifier Value:
-        identValue = "hb-" + seqN;
-
-        hbObservation.addIdentifier().setSystem(SYSTEM).setValue(identValue);
+        hbObservation.setId("Observation/hb-" + seqN);
         hbObservation.setStatus(Observation.ObservationStatus.FINAL);
         hbObservation.setEffective(new DateTimeType(timestamp));
         Coding hbCode = new Coding()
@@ -206,24 +173,28 @@ public class CsvDataUploader_Day2Hint2_FHIR_Client {
             .setCode("g/dL")
             .setValue(new BigDecimal(hb));
         hbObservation.setValue(hbValue);
-        hbObservation.setSubject(new Reference(patient));
+        hbObservation.setSubject(new Reference("Patient/" + patientId));
 
-        // add the Observation to the bundle
-        bundle.addEntry()
-            .setFullUrl(hbObservation.getIdElement().getValue())
-            .setResource(hbObservation)
-            .getRequest()
-            .setUrl("Observation")
-            .setIfNoneExist("identifier=" + SYSTEM + "|" + identValue)
-            .setMethod(Bundle.HTTPVerb.POST);
-
+        //todo: Validate the HB Observation resource
+        validate(client, hbObservation);
       }
+    }
+  }
 
-      //POST Transaction Bundle to the server
-      Bundle response = client.transaction().withBundle(bundle).execute();
+  private static void validate(IGenericClient client, DomainResource res) {
+    res.getText().setDivAsString("not-empty");
+    res.getText().setStatus(NarrativeStatus.EMPTY);
 
-      // Log the response
-      System.out.println(ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(response));
+    MethodOutcome outcome = null;
+    try {
+      outcome = client.validate().resource(res).execute();
+
+      // The returned object will contain an operation outcome resource
+      OperationOutcome oo = (OperationOutcome) outcome.getOperationOutcome();
+
+      oo.getIssue().forEach(i -> System.out.println(i.getSeverity() + ": " + i.getDiagnostics()));
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     }
   }
 }

@@ -33,7 +33,7 @@ public class CsvDataUploader_HintComplete {
 
         // Create a FHIR client
         FhirContext ctx = FhirContext.forR4();
-        IGenericClient client = ctx.newRestfulGenericClient("http://localhost:8080/fhir");
+        IGenericClient client = ctx.newRestfulGenericClient("http://hapi.fhir.org/baseR4");
         client.registerInterceptor(new LoggingInterceptor(false));
 
         // Open the CSV file for reading

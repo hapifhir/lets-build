@@ -31,7 +31,7 @@ public class CsvDataUploader_Day2_start {
 
         // The following code creates a FHIR client - You can create one client and reuse it
         // for all requests.
-        //TODO: create ctx and client with ServerBaseUrl: http://localhost:8080/fhir
+        //TODO: create ctx and client with ServerBaseUrl: http://hapi.fhir.org/baseR4
 
         // This line adds a "logging interceptor" which causes the client to output some details
         // about its actions to the console
