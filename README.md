@@ -8,7 +8,7 @@
    * [Java JDK Version 11.x.x](https://adoptopenjdk.net/) (This is the recommended version but Java 8 and above should also work)
    * [Apache Maven](https://maven.apache.org/)
 
-# Day 1 - Build a FHIR Data Mapper
+# Hour 1 - Build a FHIR Data Mapper
 
 **Rationale:** When adopting FHIR, a common scenario is needing to convert your existing data into the FHIR model. This can be a challenging first step, but if you approach it systematically it can be easy. 
 
@@ -41,24 +41,7 @@ Note the columns:
    * RBC: "Red Blood Cell Count": This is a count of the number of red blood cells in your blood (These cells are an important part of the immune system)
    * HB: "Hemoglobin": This a measurement of the amount of hemoglobin protein in your blood (this iron-rich protein carries oxygen, among other things)
 
-## Starting a local test server
 
-From the root of this repository, execute the following command:
-
-```bash
-mvn clean jetty:run
-```
-
-This will take a minute or two to start, but eventually you'll see a message that looks like this:
-
-> [INFO] Started @27659ms
-> [INFO] Started Jetty Server
-
-Try pointing your browser to the following URL to see the base URL of the server (you'll get a message that "This is the base URL of FHIR Server", this means it's working!)
-
-```
-http://localhost:8080/fhir
-```
 
 ## Writing a Mapper
 
@@ -69,7 +52,7 @@ http://localhost:8080/fhir
 * Create a FHIR Client:
  
    * Using the instructions here: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html
-   * Use the base URL for your locally running server: http://localhost:8080/fhir
+   * Use the public hapi server URL: http://hapi.fhir.org/baseR4
  
 * For each row, create the Patient resource. Use an Update (PUT) operation so that you can control the ID of the patient resource. For example, you might want *Marge Simpson* to have a resource ID of "Patient/PT00002"
 
@@ -83,7 +66,7 @@ http://localhost:8080/fhir
 
 * You can use the SEQN column as the resource ID for the Observation resources, but you will need to append something to it since there are 3 Observations per row.
 
-# Day 3 - Secure Your FHIR Server
+# Bonus - Secure Your FHIR Server
 
 In this exercise we will add simple authentication and authorization to our server. To keep things simple:
 
