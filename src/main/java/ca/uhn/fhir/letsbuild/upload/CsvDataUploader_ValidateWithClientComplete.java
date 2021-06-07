@@ -27,10 +27,10 @@ import org.hl7.fhir.r4.model.SimpleQuantity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CsvDataUploader_Day2hint3_ValidateWithClientComplete {
+public class CsvDataUploader_ValidateWithClientComplete {
 
   private static final Logger ourLog = LoggerFactory.getLogger(
-      CsvDataUploader_Day2hint3_ValidateWithClientComplete.class);
+      CsvDataUploader_ValidateWithClientComplete.class);
 
   public static void main(String[] theArgs) throws Exception {
 
