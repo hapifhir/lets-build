@@ -7,7 +7,7 @@ import ca.uhn.fhir.rest.server.interceptor.auth.RuleBuilder;
 
 import java.util.List;
 
-public class ServerAuthorizationInterceptor extends AuthorizationInterceptor {
+public class LetsBuildAuthorizationInterceptor extends AuthorizationInterceptor {
 
     @Override
     public List<IAuthRule> buildRuleList(RequestDetails theRequestDetails) {

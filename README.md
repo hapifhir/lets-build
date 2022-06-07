@@ -8,7 +8,7 @@
    * [Java JDK Version 11.x.x](https://adoptopenjdk.net/) (This is the recommended version but Java 8 and above should also work)
    * [Apache Maven](https://maven.apache.org/)
 
-# Hour 1 - Build a FHIR Data Mapper
+# Day 1 - Build a FHIR Data Mapper
 
 **Rationale:** When adopting FHIR, a common scenario is needing to convert your existing data into the FHIR model. This can be a challenging first step, but if you approach it systematically it can be easy. 
 
@@ -41,8 +41,6 @@ Note the columns:
    * RBC: "Red Blood Cell Count": This is a count of the number of red blood cells in your blood (These cells are an important part of the immune system)
    * HB: "Hemoglobin": This a measurement of the amount of hemoglobin protein in your blood (this iron-rich protein carries oxygen, among other things)
 
-
-
 ## Writing a Mapper
 
 * Open the following class: [ca.uhn.fhir.letsbuild.upload.CsvDataUploader](https://github.com/hapifhir/lets-build/blob/main/src/main/java/ca/uhn/fhir/letsbuild/upload/CsvDataUploader.java).
@@ -66,14 +64,22 @@ Note the columns:
 
 * You can use the SEQN column as the resource ID for the Observation resources, but you will need to append something to it since there are 3 Observations per row.
 
-# Bonus - Secure Your FHIR Server
+# Testing Your Solution
 
-In this exercise we will add simple authentication and authorization to our server. To keep things simple:
+The class [ca.uhn.fhir.letsbuild.server.RunServer](https://github.com/hapifhir/lets-build/blob/main/src/main/java/ca/uhn/fhir/letsbuild/server/RunServer.java) can be used to execute a local in-memory server for testing. In this server, nothing is stored to disk so data will not survive restarts!
 
-* We will secure only read operations, and we'll leave write operations unsecured. Obviously this isn't a setup you would use for real, but all of the read security principles work exactly the same for writing and can be used for those operations too.
+To execute this server, execute the command below. If you get an error of `java.io.IOException: Failed to bind to 0.0.0.0/0.0.0.0:8000` this means that port 8000 is already taken on your machine. If you can free up this port, that is great but you can also just look for 8000 in the source code here and replace it with another port.
 
-* We will hardcode our credentials in the server code. This is also not a practice you should ever use in a real system, but it makes it easy to show the concepts and can be replaced with something more robust as needed.
+```
+mvn exec:java -Dexec.mainClass="ca.uhn.fhir.letsbuild.server.RunServer"
+```
 
-## Approach
+This server does not implement the complete FHIR specification, just a very small subset needed for this exercize.
 
-Open the class `ServerAuthorizationInterceptor` and 
+The following things will work:
+
+* Creating Patient and Observation resources: `POST /Patient` and `POST /Observation`
+* Updating Patient and Observation resources: `PUT /Patient/[id]` and `PUT /Observation/[id]`
+* Searching for all Patient resources: http://localhost:8000/Patient
+* Searching for all Observation resources: http://localhost:8000/Observation
+* Searching for Observation resources by Subject: http://localhost:8000/Observation?subject=Patient/PT00002

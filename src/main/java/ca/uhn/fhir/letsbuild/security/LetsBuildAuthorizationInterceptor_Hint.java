@@ -9,7 +9,7 @@ import org.hl7.fhir.r4.model.IdType;
 
 import java.util.List;
 
-public class ServerAuthorizationInterceptor_Hint extends AuthorizationInterceptor {
+public class LetsBuildAuthorizationInterceptor_Hint extends AuthorizationInterceptor {
 
     @Override
     public List<IAuthRule> buildRuleList(RequestDetails theRequestDetails) {

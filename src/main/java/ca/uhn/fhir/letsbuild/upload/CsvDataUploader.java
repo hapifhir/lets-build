@@ -1,5 +1,6 @@
 package ca.uhn.fhir.letsbuild.upload;
 
+import ca.uhn.fhir.context.FhirContext;
 import com.google.common.base.Charsets;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -19,6 +20,8 @@ public class CsvDataUploader {
 
     public static void main(String[] theArgs) throws Exception {
 
+        FhirContext ctx = FhirContext.forR4Cached();
+
         // Open the CSV file for reading
         try (InputStream inputStream = new FileInputStream("src/main/resources/sample-data.csv")) {
             Reader reader = new InputStreamReader(inputStream, Charsets.UTF_8);
@@ -34,14 +37,14 @@ public class CsvDataUploader {
                 // Sequence number - This could be used as an ID for generated resources
                 String seqN = nextRecord.get("SEQN");
 
-                // Add a log line - you can copy this to add more helpful logging
-                ourLog.info("Processing row: {}", seqN);
-
                 // Timestamp - This will be formatted in ISO8601 format
                 String timestamp = nextRecord.get("TIMESTAMP");
 
                 // Patient ID
                 String patientId = nextRecord.get("PATIENT_ID");
+
+                // Add a log line - you can copy this to add more helpful logging
+                ourLog.info("Processing row with sequence {} for patient ID {}", seqN, patientId);
 
                 // Patient Family Name
                 String patientFamilyName = nextRecord.get("PATIENT_FAMILYNAME");
