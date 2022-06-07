@@ -47,15 +47,6 @@ Note the columns:
 
 * Notice how this class has a basic skeleton that reads in a CSV file.
 
-* Create a FHIR Client:
- 
-   * Using the instructions here: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html
-   * Use the public hapi server URL: http://hapi.fhir.org/baseR4
- 
-* For each row, create the Patient resource. Use an Update (PUT) operation so that you can control the ID of the patient resource. For example, you might want *Marge Simpson* to have a resource ID of "Patient/PT00002"
-
-* For each row, create 3 Observation resources, one for each of the 3 tests.
-
 ## Hints:
 
 * Don't optimize at first! There are lots of ways this code can be made efficient, but it's better to start by getting it working, then worry about performance later.
@@ -63,6 +54,21 @@ Note the columns:
 * You can use the PATIENT_ID column as the resource ID for the Patient resource. Using a client-assigned ID for your resources makes the outcome predictable, and means that you can re-run your uploader as many times as you like without constantly creating new datasets. 
 
 * You can use the SEQN column as the resource ID for the Observation resources, but you will need to append something to it since there are 3 Observations per row.
+
+# Hour 2 - Upload the Resources to a FHIR Server
+
+* Create a FHIR Client:
+
+  * Using the instructions here: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html
+  * Use the public hapi server URL: http://hapi.fhir.org/baseR4
+
+* For each row, create the Patient resource. Use an Update (PUT) operation so that you can control the ID of the patient resource. For example, you might want *Marge Simpson* to have a resource ID of "Patient/PT00002"
+
+* For each row, create 3 Observation resources, one for each of the 3 tests.
+
+* validate the resources against the server with your client
+
+* validate the resource using the hapi validation stack: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html#extended-operations (4.2.11Extended Operations)
 
 # Testing Your Solution
 
