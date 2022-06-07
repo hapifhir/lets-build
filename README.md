@@ -5,7 +5,7 @@
 * Check this project out to your local hard drive.
 * Open it in an IDE
 * Have the following tools installed:
-   * [Java JDK Version 11.x.x](https://adoptopenjdk.net/) (This is the recommended version but Java 8 and above should also work)
+   * [Java JDK Version 17.x](https://aws.amazon.com/corretto/) (This is the recommended version but Java 11 and above should also work)
    * [Apache Maven](https://maven.apache.org/)
 
 # Day 1 - Build a FHIR Data Mapper
