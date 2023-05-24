@@ -1,32 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <!-- one-liner to take you to the cloud with settings form the application.yaml file: -->
-  <!-- 'mvn clean package com.google.cloud.tools:jib-maven-plugin:dockerBuild -Dimage=distroless-hapi && docker run -p 8080:8080 -e spring.batch.job.enabled=false distroless-hapi' -->
-  <!--
-  Note: HAPI projects use the "hapi-fhir" POM as their base to provide easy management.
-  You do not need to use this in your own projects, so the "parent" tag and it's
-  contents below may be removed
-  if you are using this file as a basis for your own project.
-  -->
-  <parent>
-    <groupId>ca.uhn.hapi.fhir</groupId>
-    <artifactId>hapi-fhir</artifactId>
-        <version>6.0.0</version>
-  </parent>
+    <!-- one-liner to take you to the cloud with settings form the application.yaml file: -->
+    <!-- 'mvn clean package com.google.cloud.tools:jib-maven-plugin:dockerBuild -Dimage=distroless-hapi && docker run -p 8080:8080 -e spring.batch.job.enabled=false distroless-hapi' -->
+    <!--
+    Note: HAPI projects use the "hapi-fhir" POM as their base to provide easy management.
+    You do not need to use this in your own projects, so the "parent" tag and it's
+    contents below may be removed
+    if you are using this file as a basis for your own project.
+    -->
+    <parent>
+        <groupId>ca.uhn.hapi.fhir</groupId>
+        <artifactId>hapi-fhir</artifactId>
+        <version>6.4.0</version>
+    </parent>
 
-  <artifactId>hapi-fhir-lets-build</artifactId>
+    <artifactId>hapi-fhir-lets-build</artifactId>
 
-  <properties>
-    <java.version>8</java.version>
-        <jetty_version>9.4.46.v20220331</jetty_version>
-  </properties>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
 
-  <prerequisites>
-    <maven>3.6.3</maven>
-  </prerequisites>
+    <prerequisites>
+        <maven>3.6.3</maven>
+    </prerequisites>
 
     <packaging>jar</packaging>
 
@@ -42,7 +41,7 @@
         </repository>
     </repositories>
 
-  <dependencies>
+    <dependencies>
 
         <!-- This dependency includes the core HAPI-FHIR classes -->
         <dependency>
@@ -87,9 +86,9 @@
         </dependency>
 
         <!-- Logging -->
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
 
         <!-- Needed for JEE/Servlet support -->
@@ -103,27 +102,22 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
-            <version>${jetty_version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>${jetty_version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>${jetty_version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-util</artifactId>
-            <version>${jetty_version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>${jetty_version}</version>
         </dependency>
 
 
@@ -134,28 +128,26 @@
             <groupId>javax.interceptor</groupId>
             <artifactId>javax.interceptor-api</artifactId>
             <scope>provided</scope>
-    </dependency>
+        </dependency>
 
 
+    </dependencies>
 
+    <build>
 
-  </dependencies>
+        <plugins>
 
-  <build>
-
-    <plugins>
-
-      <!-- Tell Maven which Java source version you want to use -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+            <!-- Tell Maven which Java source version you want to use -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <release>11</release>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
 
-    </plugins>
-  </build>
+        </plugins>
+    </build>
 
 </project>
