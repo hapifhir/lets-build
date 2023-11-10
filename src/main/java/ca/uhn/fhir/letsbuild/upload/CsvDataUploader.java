@@ -30,7 +30,7 @@ public class CsvDataUploader {
                     .withDelimiter(',');
             CSVParser csvParser = format.parse(reader);
 
-            // Loop throw each row in the CSV file
+            // Loop through each row in the CSV file
             for (CSVRecord nextRecord : csvParser.getRecords()) {
 
                 // Sequence number - This could be used as an ID for generated resources
